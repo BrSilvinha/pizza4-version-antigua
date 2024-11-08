@@ -13,7 +13,7 @@ Este proyecto es un sistema de gestión para una pizzería, desarrollado en PHP 
 1. Clonar el repositorio:
 
 ```bash
-git clone https://github.com/Bjohan23/pizza4.git
+git clone https://github.com/Bjohan23/pizza4-version-antigua.git
 ```
 ingresamos al proyecto y abrimos con vscode o algun otro editor
 ```bash
