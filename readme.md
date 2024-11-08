@@ -17,7 +17,7 @@ git clone https://github.com/Bjohan23/pizza4-version-antigua.git
 ```
 ingresamos al proyecto y abrimos con vscode o algun otro editor
 ```bash
-cd pizza4
+cd pizza4-version-antigua
 ```
 
 2. Instalar dependencias con Composer: puedes precionar la tecla ctrl + ñ para que se abra la terminal 
@@ -25,7 +25,11 @@ cd pizza4
 ```bash
 composer install
 ```
-eso seria todo
+3. Esta es la ruta para ingresar al programa por el navegador:
+
+```plaintext
+http://localhost/PIZZA4/public/auth/login
+```
 
 4. Importar la base de datos utilizando [`piza4.sql`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2Fxampp%2Fhtdocs%2Fpizza4%2Fpiza4.sql%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D "c:\\xampp\htdocs\pizza4\piza4.sql") para estructura y datos iniciales:
 
