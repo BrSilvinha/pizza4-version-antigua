@@ -19,6 +19,5 @@ $app = new App();
     // Ocultar la barra lateral
     document.getElementById('sidebar-multi-level-sidebar').style.display = 'none';
 }
-
 </script>
 <!--  -->
