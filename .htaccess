@@ -1,0 +1,10 @@
+# Habilita el módulo de reescritura de URL de Apache
+RewriteEngine On
+
+# Si la solicitud es para el directorio raíz (es decir, no hay ruta después del nombre de dominio en la URL), 
+# redirige al usuario al directorio 'public/'
+RewriteRule ^$ public/ [L]
+
+# Para cualquier otra ruta (capturada por el patrón '(.*)'), redirige al usuario a la misma ruta, pero dentro del directorio 'public/'
+# Por ejemplo, si la ruta es 'example', el usuario será redirigido a 'public/example'
+RewriteRule (.*) public/$1 [L]

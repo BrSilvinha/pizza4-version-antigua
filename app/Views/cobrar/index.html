@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pago de Pedido - Pizzería</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+    />
+  </head>
+  <body class="bg-gray-100 p-6">
+    <div class="max-w-6x6 mx-auto bg-white p-8 rounded-lg shadow-md">
+      <div class="flex flex-col md:flex-row">
+        <!-- Sección de productos consumidos -->
+        <div class="w-full md:w-1/2 mb-6 md:mb-0 md:pr-4">
+          <h2 class="text-2xl font-bold mb-4 text-gray-800">Productos Consumidos</h2>
+          <ul class="list-disc pl-5" id="product-list">
+            <li class="mb-2">Pizza Margherita - $8.00</li>
+            <li class="mb-2">Pizza Pepperoni - $10.00</li>
+            <li class="mb-2">Refresco - $2.00</li>
+          </ul>
+          <div class="mt-4">
+            <p class="text-xl font-bold">Total: <span id="products-total">$20.00</span></p>
+          </div>
+        </div>
+        <!-- Sección del formulario de pago -->
+        <div class="w-full md:w-1/2 md:pl-4">
+          <h2 class="text-2xl font-bold mb-6 text-gray-800">Pago de Pedido</h2>
+          <form id="paymentForm" class="space-y-6">
+            <div class="mb-4">
+              <label class="block text-gray-700">Buscar Cliente</label>
+              <div class="flex">
+                <input
+                  type="text"
+                  id="search-client"
+                  class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  placeholder="DNI, Nombre o Apellido"
+                />
+                <button
+                  type="button"
+                  id="btn-search-client"
+                  class="ml-2 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 flex items-center"
+                >
+                  <svg
+                    class="w-6 h-6 text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-width="2"
+                      d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div id="client-info" class="mt-4 hidden">
+                <p class="text-lg font-bold">Cliente Encontrado:</p>
+                <p id="client-name" class="text-lg">Nombre del Cliente</p>
+              </div>
+              <button
+                type="button"
+                id="btn-register-client"
+                class="mt-2 bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 hidden"
+              >
+                Registrar Cliente
+              </button>
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700">Métodos de Pago</label>
+              <div class="space-y-2">
+                <div class="flex items-center">
+                  <input
+                    type="radio"
+                    id="efectivo"
+                    name="payment-method"
+                    value="efectivo"
+                    class="mr-2"
+                  />
+                  <label for="efectivo">Efectivo</label>
+                </div>
+                <div class="flex items-center">
+                  <input type="radio" id="yape" name="payment-method" value="yape" class="mr-2" />
+                  <label for="yape">Yape</label>
+                </div>
+                <div class="flex items-center">
+                  <input
+                    type="radio"
+                    id="tarjeta"
+                    name="payment-method"
+                    value="tarjeta"
+                    class="mr-2"
+                  />
+                  <label for="tarjeta">Tarjeta</label>
+                </div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700">Cantidad a Pagar</label>
+              <input
+                type="number"
+                id="payment-amount"
+                class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700">Monto Total</label>
+              <input
+                type="number"
+                id="total-amount"
+                value="20"
+                readonly
+                class="mt-1 block w-full px-3 py-2 bg-gray-200 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700">Vuelto</label>
+              <input
+                type="number"
+                id="change-amount"
+                readonly
+                class="mt-1 block w-full px-3 py-2 bg-gray-200 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            <button
+              type="submit"
+              class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm"
+            >
+              Pagar
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+      const TOKEN =
+        "lyra-token-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJkZW1vMUBnbWFpbC5jb20iLCJpYXQiOjE3MTQ4Nzc2NDZ9.0agfoqCO6enLProlL9jyc5GrDgtxtfSerOsRbwN3Pkw";
+
+      toastr.options = {
+        closeButton: true,
+        debug: false,
+        newestOnTop: false,
+        progressBar: true,
+        positionClass: "toast-top-right",
+        preventDuplicates: true,
+        showDuration: "300",
+        hideDuration: "1000",
+        timeOut: "5000",
+        extendedTimeOut: "1000",
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut",
+      };
+
+      const getAjaxByToken = async (url, token) => {
+        try {
+          const response = await fetch(url, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return await response.json();
+        } catch (error) {
+          toastr.error("Error en la consulta", "Error");
+        }
+      };
+
+      $("#btn-search-client").on("click", async () => {
+        const searchValue = $("#search-client").val();
+        if (!searchValue) {
+          return toastr.warning("Ingrese un DNI, nombre o apellido para buscar", "Advertencia");
+        }
+
+        const response = await getAjaxByToken(
+          `http://apiconsultas.lyracorp.pro/api/dni/${searchValue}`,
+          TOKEN
+        );
+        if (response && response.data) {
+          const data = response.data;
+          $("#client-name").text(data.nombre_completo);
+          $("#client-info").removeClass("hidden");
+          $("#btn-register-client").addClass("hidden");
+        } else {
+          $("#client-info").addClass("hidden");
+          $("#btn-register-client").removeClass("hidden");
+          toastr.error("No se encontraron datos para el valor ingresado", "Error");
+        }
+      });
+
+      document.getElementById("payment-amount").addEventListener("input", calculateChange);
+      document.getElementById("total-amount").addEventListener("input", calculateChange);
+
+      function calculateChange() {
+        const paymentAmount = parseFloat(document.getElementById("payment-amount").value) || 0;
+        const totalAmount = parseFloat(document.getElementById("total-amount").value) || 0;
+        const change = paymentAmount - totalAmount;
+        document.getElementById("change-amount").value = change >= 0 ? change : 0;
+      }
+    </script>
+  </body>
+</html>
+
+
