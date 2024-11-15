@@ -2,6 +2,12 @@
 
 class Categoria extends Model
 {
+    public $db;
+
+    public function __construct($db)
+    {
+        $this->db = $db;
+    }
     public function getCategorias()
     {
         $this->db->query('SELECT * FROM categoría');
