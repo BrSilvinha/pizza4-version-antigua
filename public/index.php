@@ -14,10 +14,11 @@ $app = new App();
 
 ?>
 
+
 <script>
     if (window.location.pathname === '/PIZZA4/public/auth/login') {
     // Ocultar la barra lateral
     document.getElementById('sidebar-multi-level-sidebar').style.display = 'none';
 }
 </script>
-<!--  -->
+

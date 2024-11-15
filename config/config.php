@@ -3,11 +3,19 @@
 //require_once 'C:/Users/narum/AppData/Roaming/Composer/vendor/autoload.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
+// para desarrollo local 
+// define('DB_HOST', 'localhost');
+// define('DB_USER', 'root');
+// define('DB_PASS', '');
+// define('DB_NAME', 'piza4');
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'piza4');
+// para produccion
+define('DB_HOST', 'bghp6iqtuan6h2morfem-mysql.services.clever-cloud.com');
+define('DB_USER', 'ub7wd11kwfomybdn');
+define('DB_PASS', 'MYcQCHiY9NXJDdNpD72Y');
+define('DB_NAME', 'bghp6iqtuan6h2morfem');
+define('DB_PORT', '3306');
+
 define('USERNAME', 'johan230804@gmail.com');
 define('NOMBRE_EMPRE', 'PIZZERIA ZARELLE');
 // Configurar la zona horaria en PHP

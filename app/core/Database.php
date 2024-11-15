@@ -23,7 +23,7 @@ class Database
             $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
         } catch (PDOException $e) {
             $this->error = $e->getMessage();
-            echo $this->error;
+            echo "Error de conexión: " . $e->getMessage();
         }
     }
 
