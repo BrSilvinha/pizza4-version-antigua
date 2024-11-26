@@ -305,25 +305,25 @@
 
 <!-- Script para manejar el pago -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Inicializar modal de Flowbite
-        const modal = new Modal(document.getElementById('payment-modal'));
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar modal de Flowbite
+    const modal = new Modal(document.getElementById('payment-modal'));
 
-        // Botón para mostrar modal
-        document.getElementById('cobrar-button').addEventListener('click', function() {
-            modal.show();
-        });
+    // Botón para mostrar modal
+    document.getElementById('cobrar-button').addEventListener('click', function() {
+        modal.show();
+    });
 
-        // Manejar cambios en el método de pago
-        document.getElementById('payment-method').addEventListener('change', function() {
-            const paymentFields = document.getElementById('payment-fields');
-            const total = <?php echo $total; ?>; // Obtener el total del PHP
+    // Manejar cambios en el método de pago
+    document.getElementById('payment-method').addEventListener('change', function() {
+        const paymentFields = document.getElementById('payment-fields');
+        const total = <?php echo $total; ?>; // Obtener el total del PHP
 
-            paymentFields.innerHTML = ''; // Limpiar campos anteriores
+        paymentFields.innerHTML = ''; // Limpiar campos anteriores
 
-            switch (this.value) {
-                case 'efectivo':
-                    paymentFields.innerHTML = `
+        switch (this.value) {
+            case 'efectivo':
+                paymentFields.innerHTML = `
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Monto Recibido
@@ -369,16 +369,16 @@
                     </div>
                 `;
 
-                    // Calcular vuelto automáticamente
-                    document.getElementById('payment-amount').addEventListener('input', function() {
-                        const paymentAmount = parseFloat(this.value) || 0;
-                        const changeAmount = paymentAmount - total;
-                        document.getElementById('change-amount').value = changeAmount >= 0 ? changeAmount.toFixed(2) : '0.00';
-                    });
-                    break;
+                // Calcular vuelto automáticamente
+                document.getElementById('payment-amount').addEventListener('input', function() {
+                    const paymentAmount = parseFloat(this.value) || 0;
+                    const changeAmount = paymentAmount - total;
+                    document.getElementById('change-amount').value = changeAmount >= 0 ? changeAmount.toFixed(2) : '0.00';
+                });
+                break;
 
-                case 'yape':
-                    paymentFields.innerHTML = `
+            case 'yape':
+                paymentFields.innerHTML = `
                     <div class="text-center space-y-4">
                         <img src="http://localhost/PIZZA4/public/img/qr.jpg" class="mx-auto max-w-sm rounded-lg" alt="QR Yape">
                         <p class="text-sm text-gray-500 dark:text-gray-400">Escanea el código QR para pagar S/. ${total.toFixed(2)}</p>
@@ -387,21 +387,23 @@
                                 Número de Operación
                             </label>
                             <input type="text" 
+                                   id="operation-number"
                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
                                    required>
                         </div>
                     </div>
                 `;
-                    break;
+                break;
 
-                case 'tarjeta':
-                    paymentFields.innerHTML = `
+            case 'tarjeta':
+                paymentFields.innerHTML = `
                     <div class="space-y-4">
                         <div>
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 Número de Tarjeta
                             </label>
                             <input type="text" 
+                                   id="card-number"
                                    placeholder="1234 5678 9012 3456" 
                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
                                    maxlength="19"
@@ -413,6 +415,7 @@
                                     Fecha de Expiración
                                 </label>
                                 <input type="text" 
+                                       id="card-expiry"
                                        placeholder="MM/AA" 
                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
                                        maxlength="5"
@@ -423,6 +426,7 @@
                                     CVV
                                 </label>
                                 <input type="password" 
+                                       id="card-cvv"
                                        placeholder="123" 
                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
                                        maxlength="4"
@@ -431,19 +435,70 @@
                         </div>
                     </div>
                 `;
-                    break;
-            }
-        });
+                break;
+        }
+    });
 
-        // Manejar envío del formulario
-        document.getElementById('paymentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+    // Manejar envío del formulario
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-            // Mostrar indicador de carga en el botón
-            const submitButton = this.querySelector('button[type="submit"]');
-            const originalText = submitButton.innerHTML;
-            submitButton.disabled = true;
-            submitButton.innerHTML = `
+        // Obtener el método de pago seleccionado
+        const paymentMethod = document.getElementById('payment-method').value;
+        const pedidoId = <?php echo $data['pedido']['pedido_id']; ?>;
+        const total = <?php echo $total; ?>;
+
+        // Validar según el método de pago
+        let isValid = true;
+        let formData = new FormData();
+
+        formData.append('pedido_id', pedidoId);
+        formData.append('total', total);
+        formData.append('tipo', paymentMethod);
+
+        switch(paymentMethod) {
+            case 'efectivo':
+                const montoRecibido = parseFloat(document.getElementById('payment-amount').value);
+                if (montoRecibido < total) {
+                    alert('El monto recibido debe ser mayor o igual al total');
+                    isValid = false;
+                }
+                formData.append('monto_recibido', montoRecibido);
+                break;
+
+            case 'yape':
+                const operationNumber = document.getElementById('operation-number').value;
+                if (!operationNumber) {
+                    alert('Por favor, ingrese el número de operación');
+                    isValid = false;
+                }
+                formData.append('nro_operacion', operationNumber);
+                break;
+
+            case 'tarjeta':
+                const cardNumber = document.getElementById('card-number').value;
+                const cardExpiry = document.getElementById('card-expiry').value;
+                const cardCvv = document.getElementById('card-cvv').value;
+                
+                if (!cardNumber || !cardExpiry || !cardCvv) {
+                    alert('Por favor, complete todos los campos de la tarjeta');
+                    isValid = false;
+                }
+                formData.append('card_number', cardNumber);
+                formData.append('card_expiry', cardExpiry);
+                break;
+        }
+
+        // Agregar campo para la boleta
+        formData.append('boleta', 'si');
+
+        if (!isValid) return;
+
+        // Mostrar indicador de carga
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalText = submitButton.innerHTML;
+        submitButton.disabled = true;
+        submitButton.innerHTML = `
             <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -451,27 +506,53 @@
             Procesando...
         `;
 
-            // Simular proceso de pago
-            setTimeout(() => {
-                // Mostrar alerta de éxito
-                const successAlert = `
+        // Enviar formulario
+        fetch(`/PIZZA4/public/pedidos/cobrar/${pedidoId}`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la respuesta del servidor');
+            }
+            return response.text();
+        })
+        .then(result => {
+            // Mostrar mensaje de éxito
+            const successAlert = `
                 <div id="alert-success" class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
                     <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
                     </svg>
-                    <span class="sr-only">Info</span>
                     <div class="ms-3 text-sm font-medium">
                         Pago procesado exitosamente.
                     </div>
                 </div>
             `;
-                document.querySelector('.modal-body').insertAdjacentHTML('afterbegin', successAlert);
+            document.querySelector('.modal-body').insertAdjacentHTML('afterbegin', successAlert);
 
-                // Redireccionar después de 2 segundos
-                setTimeout(() => {
-                    window.location.href = '/PIZZA4/public/mesas';
-                }, 2000);
+            // Redireccionar después de 2 segundos
+            setTimeout(() => {
+                window.location.href = '/PIZZA4/public/mesas';
             }, 2000);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalText;
+            
+            const errorAlert = `
+                <div id="alert-error" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                    <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                    </svg>
+                    <div class="ms-3 text-sm font-medium">
+                        Error al procesar el pago. Por favor, intente nuevamente.
+                    </div>
+                </div>
+            `;
+            document.querySelector('.modal-body').insertAdjacentHTML('afterbegin', errorAlert);
         });
     });
+});
 </script>

@@ -377,6 +377,7 @@ class PedidosController extends Controller
             exit();
         }
     }
+    
     public function imprimirBoleta($datos)
     {
 
