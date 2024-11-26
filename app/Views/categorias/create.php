@@ -11,7 +11,7 @@
                         <?php if (isset($data['error'])) : ?>
                             <p class="text-red-500 text-center"><?php echo $data['error']; ?></p>
                         <?php endif; ?>
-                        <form action="/PIZZA4/public/categorias/create" method="POST" class="space-y-6">
+                        <form action="<?=CATEGORY_CREATE?>" method="POST" class="space-y-6">
                             <div>
                                 <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nombre de la Categoría</label>
                                 <input type="text" name="nombre" id="nombre" class="shadow-sm bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-3 focus:outline-none" required>

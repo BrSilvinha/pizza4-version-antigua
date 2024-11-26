@@ -1,23 +1,22 @@
 <?php
-// Incluir el autoload global de Composer
-//require_once 'C:/Users/narum/AppData/Roaming/Composer/vendor/autoload.php';
-require_once __DIR__ . '/../vendor/autoload.php';
 
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_HOST', '143.110.157.18');
+define('DB_USER', 'dev_user');
+define('DB_PASS', 'Lyracorp1104*');
 define('DB_NAME', 'piza4');
 define('USERNAME', 'johan230804@gmail.com');
 define('NOMBRE_EMPRE', 'PIZZERIA ZARELLE');
+define('TOKEN', '1234567890');
 // Configurar la zona horaria en PHP
 date_default_timezone_set('America/Lima');
 
 // // salir
-// define('SALIR', '/PIZZA4/public/auth/login');
-define('SALIR', '/PIZZA4/public/auth/logout');
+define('LOGIN', '/PIZZA4/public/auth/login');
+define('SALIR', '/PIZZA4/public/auth/login');
 define('APP_URL', 'http://localhost/PIZZA4/');
-define('INICIO', '/PIZZA4/public/');
+define('INICIO', '/PIZZA4/public/dashboard');
+// http://localhost/PIZZA4/public/usuarios
 define('FORM_URL', '/PIZZA4/public/');
 define('APP_NAME', 'PIZZERIA ZARELLE');
 define('APP_PATH', realpath(dirname(__FILE__, 2)) . '/'); // obtiene la ruta del proyecto en el servidor local o en el servidor de produccion

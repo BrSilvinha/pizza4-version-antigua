@@ -5,6 +5,9 @@ class Session
     public static function init()
     {
         if (session_status() == PHP_SESSION_NONE) {
+            if (!self::isSessionEnabled()) {
+                die("Las sesiones no están habilitadas en el servidor.");
+            }
             session_start();
         }
     }
@@ -30,5 +33,10 @@ class Session
     {
         session_destroy();
         $_SESSION = [];
+    }
+
+    private static function isSessionEnabled()
+    {
+        return function_exists('session_start');
     }
 }

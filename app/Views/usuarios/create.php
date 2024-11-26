@@ -5,7 +5,7 @@
             <?php if (isset($data['error'])) : ?>
                 <p class="text-red-500 mb-4"><?php echo $data['error']; ?></p>
             <?php endif; ?>
-            <form action="/PIZZA4/public/usuarios/create" method="POST" class="space-y-4">
+            <form action="<?= USER_CREATE ?>" method="POST" class="space-y-4">
                 <div class="mb-4">
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">DNI</label>
                     <div class="flex">
@@ -55,7 +55,7 @@
 </main>
 
 <script>
-    const TOKEN = <?php echo json_encode(TOKEN) ?>;
+    const TOKEN = <?php echo json_encode(TOKEN); ?>;
 
     toastr.options = {
         closeButton: true,

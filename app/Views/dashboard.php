@@ -14,7 +14,6 @@
 
         <!-- Cuadros -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            <?php if ($data['rolUsuario'] == 'Administrador') { ?>
                 <!-- Usuarios -->
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-purple-400 dark:bg-purple-600 rounded-lg shadow-lg transition duration-200 transform hover:scale-105">
@@ -153,7 +152,6 @@
                         </a>
                     </div>
                 </div>
-            <?php } ?>
             <!-- Pedidos -->
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-green-400 dark:bg-green-600 rounded-lg shadow-lg transition duration-200 transform hover:scale-105">
@@ -178,23 +176,9 @@
         <br>
 
 
-        <!-- Gráfica "Total de Pedidos por Estado" -->
-        <!-- <div class="border-2 rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-6 bg-white dark:bg-gray-800 shadow-lg">
-        </div> -->
-        <?php if ($data['rolUsuario'] == 'Administrador') { ?>
 
             <canvas id="pedidosChart" class="border-2 rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-6 bg-white dark:bg-gray-800 shadow-lg"></canvas>
             <canvas id="productosMasVendidosChart" class="border-2 rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-6 bg-white dark:bg-gray-800 shadow-lg" width="100" height="100"></canvas>
-        <?php } else { ?>
-            <!-- mostrar un div con un mensaje que diga no tiene permisos para ver esta informacion -->
-            <div class="border-2 rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-6 bg-white dark:bg-gray-800 shadow-lg">
-                <h1 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">No tiene permisos para ver esta información</h1>
-            </div>
-            <div class="border-2 rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-6 bg-white dark:bg-gray-800 shadow-lg">
-                <h1 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">No tiene permisos para ver esta información</h1>
-            </div>
-        <?php  } ?>
-
 
         <div class="grid grid-cols-2 gap-6">
             <div class="border-2 rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72 bg-white dark:bg-gray-800 shadow-lg"></div>

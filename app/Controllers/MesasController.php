@@ -6,7 +6,7 @@ class MesasController extends Controller
     {
         Session::init();
         if (!Session::get('usuario_id')) {
-            header('Location: ' . SALIR);
+            header('Location: ' . LOGIN);
             exit();
         }
         $mesaModel = $this->model('Mesa');
@@ -21,7 +21,7 @@ class MesasController extends Controller
     {
         Session::init();
         if (!Session::get('usuario_id')) {
-            header('Location: ' . SALIR);
+            header('Location: ' . LOGIN);
             exit();
         }
         $pisoModel = $this->model('Piso');
@@ -53,7 +53,7 @@ class MesasController extends Controller
     {
         Session::init();
         if (!Session::get('usuario_id')) {
-            header('Location: ' . SALIR);
+            header('Location: ' . LOGIN);
             exit();
         }
         $mesaModel = $this->model('Mesa');
@@ -87,7 +87,7 @@ class MesasController extends Controller
     {
         Session::init();
         if (!Session::get('usuario_id')) {
-            header('Location: ' . SALIR);
+            header('Location: ' . LOGIN);
             exit();
         }
         $mesaModel = $this->model('Mesa');

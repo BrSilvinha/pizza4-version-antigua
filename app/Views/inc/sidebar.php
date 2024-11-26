@@ -55,7 +55,6 @@
                         <?php } ?>
                     </ul>
                 </li>
-                <?php if ($data['rolUsuario'] == 'Administrador') { ?>
 
                     <!-- Gestión de Usuarios Menu -->
                     <li>
@@ -207,7 +206,7 @@
                         </ul>
 
                     </li>
-                <?php }  ?>
+                
         </div>
     </aside>
 <?php endif; ?>

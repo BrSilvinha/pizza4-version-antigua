@@ -5,7 +5,7 @@
             <?php if (isset($data['error'])) : ?>
                 <p class="text-red-500 mb-4"><?php echo $data['error']; ?></p>
             <?php endif; ?>
-            <form action="/PIZZA4/public/usuarios/edit/<?php echo isset($data['usuario']['id']) ? $data['usuario']['id'] : ''; ?>" method="post" class="space-y-4">
+            <form action="<?= USER_EDIT?><?php echo isset($data['usuario']['id']) ? $data['usuario']['id'] : ''; ?>" method="post" class="space-y-4">
 
                 <div class="mb-4">
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">DNI</label>

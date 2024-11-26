@@ -1,6 +1,28 @@
-RewriteEngine On
+<IfModule mod_rewrite.c>
+    Options -Multiviews
+    RewriteEngine On
+    RewriteBase /PIZZA4/public/
+    
+    # Si el archivo o directorio no existe
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    
+    # Redirige todo a index.php
+    RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+</IfModule>
 
-# Redirigir todas las solicitudes a index.php
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+# Manejo de errores
+ErrorDocument 404 /PIZZA4/public/error/404
+ErrorDocument 500 /PIZZA4/public/error/500
+
+# Prevenir listado de directorios
+Options -Indexes
+
+# Establecer zona horaria por defecto
+php_value date.timezone "America/Bogota"
+
+# Configuración de PHP
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
+php_value max_execution_time 300
+php_value max_input_time 300

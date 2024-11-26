@@ -1,29 +1,25 @@
 <?php
-
 class Database
 {
-    private $host = DB_HOST;
-    private $user = DB_USER;
-    private $pass = DB_PASS;
-    private $dbname = DB_NAME;
-
     private $dbh;
     private $stmt;
     private $error;
 
     public function __construct()
     {
-        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
+        $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8';
         $options = array(
             PDO::ATTR_PERSISTENT => true,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
         );
 
         try {
-            $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
+            $this->dbh = new PDO($dsn, DB_USER, DB_PASS, $options);
         } catch (PDOException $e) {
-            $this->error = $e->getMessage();
-            echo $this->error;
+            error_log("Error de conexión a la base de datos: " . $e->getMessage());
+            throw new Exception("Error de conexión a la base de datos");
         }
     }
 
@@ -54,28 +50,58 @@ class Database
 
     public function execute()
     {
-        return $this->stmt->execute();
+        try {
+            return $this->stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Error al ejecutar la consulta: " . $e->getMessage());
+            return false;
+        }
     }
 
     public function resultSet()
     {
-        $this->execute();
-        return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $this->execute();
+            return $this->stmt->fetchAll();
+        } catch (PDOException $e) {
+            error_log("Error al obtener resultados: " . $e->getMessage());
+            return false;
+        }
     }
 
     public function single()
     {
-        $this->execute();
-        return $this->stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function rowCount()
-    {
-        return $this->stmt->rowCount();
+        try {
+            $this->execute();
+            return $this->stmt->fetch();
+        } catch (PDOException $e) {
+            error_log("Error al obtener resultado: " . $e->getMessage());
+            return false;
+        }
     }
 
     public function lastInsertId()
     {
-        return $this->dbh->lastInsertId();
+        try {
+            return $this->dbh->lastInsertId();
+        } catch (PDOException $e) {
+            error_log("Error al obtener el último ID insertado: " . $e->getMessage());
+            return false;
+        }
+    }
+    
+    public function beginTransaction()
+    {
+        return $this->dbh->beginTransaction();
+    }
+
+    public function commit()
+    {
+        return $this->dbh->commit();
+    }
+
+    public function rollBack()
+    {
+        return $this->dbh->rollBack();
     }
 }

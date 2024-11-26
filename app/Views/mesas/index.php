@@ -1,4 +1,4 @@
-   <link rel="stylesheet" href="http://localhost/PIZZA4/public/css/style.css">
+   <link rel="stylesheet" href="<?= APP_URL ?>public/css/style.css">
 
    <main class="p-4 md:ml-64 h-auto pt-20 bg-gray-100 dark:bg-gray-900 min-h-screen">
        <section class="bg-gray-50 dark:bg-gray-900 py-3 sm:py-5">

@@ -4,9 +4,9 @@ class Categoria extends Model
 {
     public $db;
 
-    public function __construct($db)
+    public function __construct()
     {
-        $this->db = $db;
+        parent::__construct();
     }
     public function getCategorias()
     {
