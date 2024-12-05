@@ -4,11 +4,22 @@ class Session
 {
     public static function init()
     {
+        // En modo pruebas (CLI), solo inicializar array
+        if (PHP_SAPI === 'cli' || defined('TESTING')) {
+            if (!isset($_SESSION)) {
+                $_SESSION = [];
+            }
+            return;
+        }
+
+        // En modo web normal
         if (session_status() == PHP_SESSION_NONE) {
             if (!self::isSessionEnabled()) {
                 die("Las sesiones no están habilitadas en el servidor.");
             }
-            session_start();
+            if (!headers_sent()) {
+                session_start();
+            }
         }
     }
 
@@ -31,7 +42,11 @@ class Session
 
     public static function destroy()
     {
-        session_destroy();
+        if (PHP_SAPI !== 'cli' && !defined('TESTING')) {
+            if (session_status() === PHP_SESSION_ACTIVE) {
+                session_destroy();
+            }
+        }
         $_SESSION = [];
     }
 

@@ -89,6 +89,11 @@ class Database
             return false;
         }
     }
+
+    public function rowCount()
+    {
+        return $this->stmt->rowCount();
+    }
     
     public function beginTransaction()
     {
