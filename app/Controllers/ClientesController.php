@@ -11,7 +11,6 @@ class ClientesController extends Controller
         } else {
             $clienteModel = $this->model('Cliente');
             $clientes = $clienteModel->getAllClientes();
-
             $usuarioModel = $this->model('Usuario');
             $rolUsuario = $usuarioModel->getRolesUsuarioAutenticado(Session::get('usuario_id'));
             $this->view('clientes/index', ['clientes' => $clientes, 'rolUsuario' => $rolUsuario]);
@@ -72,7 +71,6 @@ class ClientesController extends Controller
                     'direccion' => $_POST['direccion'],
                     'dni' => $_POST['dni'],
                 ];
-
                 if ($clienteModel->updateCliente($data)) {
                     header('Location: ' . CLIENT . '?success= cliente actualizado correctamente');
                     exit();
